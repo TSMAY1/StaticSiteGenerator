@@ -1,6 +1,6 @@
 import os
 import shutil
-from markdown_to_html_node import markdown_to_html_node
+from src.markdown_to_html_node import markdown_to_html_node
 
 
 def delete_public_directory():
@@ -61,24 +61,29 @@ def generate_page(from_path, template_path, dest_path):
     title = extract_title(markdown_content)
     final_html = template_content.replace("{{ Title }}", title).replace("{{ Content }}", html_content)
 
-    for root, dirs, files in os.walk(from_path):
-        for file in files:
-            ## WORK ON RECURSION TO MAKE IT GENERATE HTML FOR ALL PAGES
-
     if not os.path.exists(os.path.dirname(dest_path)):
         os.makedirs(os.path.dirname(dest_path))
         print(f"Created directory for {dest_path}.")
     with open(dest_path, 'w') as dest_file:
         print(f"Writing final HTML to {dest_path}.")
         dest_file.write(final_html)
+
+def generate_pages_recursive(from_path, template_path, destination_html_path):
     
+    for root, dirs, files in os.walk(from_path):
+        for file in files:
+            if file.endswith(".md"):
+                full_file_path = os.path.join(root, file)
+                destination_html_path = full_file_path.replace("content", "public")
+                destination_html_path = destination_html_path.replace(".md", ".html")
+                generate_page(full_file_path, template_path, destination_html_path)
 
 def main():
     print("Hello from static-site-generator!")
     delete_public_directory()
     create_public_directory()
     copy_static_to_public("")
-    generate_page("content/index.md", "template.html", "public/index.html")
+    generate_pages_recursive("content", "template.html", "public")
 
 
 if __name__ == "__main__":

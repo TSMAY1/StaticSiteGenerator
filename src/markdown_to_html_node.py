@@ -1,10 +1,10 @@
-from textnode import TextNode, TextType, text_node_to_html_node
+from .textnode import TextNode, TextType, text_node_to_html_node
 
-from block import BlockType, block_to_block_type
-from split_nodes_delimiter import split_nodes_delimiter
-from text_to_textnodes import text_to_textnodes
-from markdown_to_blocks import markdown_to_blocks
-from htmlnode import HTMLNode, ParentNode, LeafNode
+from .block import BlockType, block_to_block_type
+from .split_nodes_delimiter import split_nodes_delimiter
+from .text_to_textnodes import text_to_textnodes
+from .markdown_to_blocks import markdown_to_blocks
+from .htmlnode import HTMLNode, ParentNode, LeafNode
 
 def text_to_children(text):
     text_nodes = text_to_textnodes(text)
